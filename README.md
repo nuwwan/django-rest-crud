@@ -124,4 +124,12 @@ touch launch.json
     ]
 }
 ```
+3. Add python interpreter location to vs code.
+- press `command` + `P`.
+- Type `>` on the text section appear very top of the IDE.
+- Click on `Python: Select Interpreter`.
+- Enter python executable location there.(vnev python location)
+```
+ex: ~/Desktop/projects/my_app/venv/bin/python
+```
 </details>
