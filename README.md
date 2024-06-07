@@ -38,12 +38,60 @@ Bonjour! your first django up and running...
 ## upload project to github
 <details>
 <summary>Smash me to show-up</summary>
-1. cd into the base directory of your project
+
+1. cd into the base directory of your project.
 ```
 cd /where/you/want/to/go
 ```
+
 2. Initialize git repository.
 ```
 git init
 ```
+3. Add files that are going to be included in first commit.
+```
+# git add single file
+git add *file_name*
+
+# git add everything inside current directory
+git add .
+
+```
+
+4. Create a commit
+```
+git commit -m 'initial commit'
+```
+
+5. Create github repository.
+
+6. Add remote link to your project.
+```
+git remote add origin https://github.com/your/project.git
+```
+
+7. Create main branch
+```
+git branch -M main
+```
+
+8. push to github.
+```
+git push -u origin main
+```
+
+9. Add `.gitignore` file.
+```
+# macos
+touch .gitignore
+```
+
+10. Add directories or files which are not going to pushed to github.
+```
+dir/
+__pycache__/ # ignone pycache directory
+*.pyc # ignore all py cache files
+*.sqlite3 # ignore database file
+```
+
 </details>
