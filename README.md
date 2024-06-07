@@ -55,7 +55,6 @@ git add *file_name*
 
 # git add everything inside current directory
 git add .
-
 ```
 
 4. Create a commit
@@ -94,4 +93,35 @@ __pycache__/ # ignone pycache directory
 *.sqlite3 # ignore database file
 ```
 
+</details>
+
+## Configure Debugger for vs code
+<details>
+<summary>cclick here to expand</summary>
+
+1. Create a `launch.json file`
+```
+mkdir .vscode
+cd .vscode
+touch launch.json
+```
+2. Add following content to the `launch.josn`.
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Django",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py", // location for manage.py file
+            "args": [
+                "runserver",
+                "5000" // specify the port
+            ],
+            "django": true
+        }
+    ]
+}
+```
 </details>
