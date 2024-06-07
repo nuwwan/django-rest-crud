@@ -34,3 +34,16 @@ python manage.py startapp *app_ma,e*
 python manage.py runserver 0.0.0.0:8000 # you can use any port here, i'm mr 8000 <3
 ```
 Bonjour! your first django up and running...
+
+## upload project to github
+<details>
+<summary>Smash me to show-up</summary>
+1. cd into the base directory of your project
+```
+cd /where/you/want/to/go
+```
+2. Initialize git repository.
+```
+git init
+```
+</details>
