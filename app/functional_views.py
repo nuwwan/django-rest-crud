@@ -14,6 +14,7 @@ def get_hello(request):
 """
 This endpoint creates author on database
 @param name : string
+@method POST
 """
 @api_view(["POST"])
 def create_author(request):
@@ -36,6 +37,7 @@ def create_author(request):
 
 """
 This API endpoint adds book objects to a Author object that already on db.
+@method POST
 @param author_id : author id of the author object that is going to be base object of the books.
 @param books[] : books object 
 sample request body = 
@@ -63,7 +65,7 @@ def add_books_to_author(request):
             Book.objects.bulk_create(book_objs)
             data = {"message": "Books saved successfully"}
             return Response(data=data, status=status.HTTP_201_CREATED)
-        
+
     except Author.DoesNotExist:
         data = {"message": "Author does not exist"}
         return Response(data=data, status=status.HTTP_404_NOT_FOUND)
@@ -72,3 +74,30 @@ def add_books_to_author(request):
         data = {"message": "Internal server Error"}
         return Response(data=data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+"""
+This API endpoint returns an author specefied by an id
+@method POST
+@params id : author id
+@return author and books associated with the author id
+"""
+@api_view(["GET"])
+def get_author(request, id):
+    author_id = id
+
+    # fetch the Author object
+    try:
+        author = Author.objects.get(pk=author_id)
+        return_data = {
+            "id": author.pk,
+            "name": author.name,
+            "books": [{"title": b.title, "id": b.pk} for b in author.books.all()],
+        }
+        data = {"message": "Author data fetched Successfully", "data": return_data}
+        return Response(data=data, status=status.HTTP_200_OK)
+    except Author.DoesNotExist:
+        data = {"message": "Author does not exist!"}
+        return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+    except Exception as ex:
+        data = {"message": "Internal Server Error"}
+        Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
