@@ -1,8 +1,12 @@
+import logging
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Author, Book
+
+# Register Logger
+logger = logging.getLogger(__name__)
 
 
 @api_view(["GET"])
@@ -24,12 +28,16 @@ def create_author(request):
         try:
             author = Author(name=name)
             author.save()
+            logger.info(f"Author for name={name} is saved successfully!")
             return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
         except Exception as ex:
+            logger.error("Error occured when saving the author!")
+            logger.error(ex)
             return Response(
                 {"message": "Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     else:
+        logger.debug("Invalid input data!")
         return Response(
             {"message": "Wrong input data!"}, status=status.HTTP_400_BAD_REQUEST
         )
@@ -64,14 +72,18 @@ def add_books_to_author(request):
             book_objs = [Book(title=b.get("title"), author=author) for b in books]
             Book.objects.bulk_create(book_objs)
             data = {"message": "Books saved successfully"}
+            logger.info(f"Books were added for the user={author_id} successfully!")
             return Response(data=data, status=status.HTTP_201_CREATED)
 
-    except Author.DoesNotExist:
+    except Author.DoesNotExist as ex:
         data = {"message": "Author does not exist"}
+        logger.error("Author does not exist")
+        logger.error(ex)
         return Response(data=data, status=status.HTTP_404_NOT_FOUND)
     except Exception as ex:
         # return internal error
         data = {"message": "Internal server Error"}
+        logger.error("Internal Server Error!")
         return Response(data=data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -94,10 +106,15 @@ def get_author(request, id):
             "books": [{"title": b.title, "id": b.pk} for b in author.books.all()],
         }
         data = {"message": "Author data fetched Successfully", "data": return_data}
+        logger.info(f"AUthor for id={author_id} is fetched successfully.")
         return Response(data=data, status=status.HTTP_200_OK)
-    except Author.DoesNotExist:
+    except Author.DoesNotExist as ex:
+        logger.error(f"Author for id={author_id} does not exist!")
+        logger.error(ex)
         data = {"message": "Author does not exist!"}
         return Response(data=data, status=status.HTTP_404_NOT_FOUND)
     except Exception as ex:
         data = {"message": "Internal Server Error"}
+        logger.error("internal server error!")
+        logger.error(ex)
         Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
